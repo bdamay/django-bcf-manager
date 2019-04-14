@@ -21,21 +21,25 @@ def extract_content_from_bcfzip(filename, temp_dir):
     markup_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'markup.xsd'))
     viewpoint_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'visinfo.xsd'))
 
+    # getting project info in project.bcfp file
+    project = project_schema.to_dict(os.path.join(temp_dir, 'project.bcfp'))
+
     #One subdirectory = one BCF issue containing markup.bcf, viewpoint.bcfv and snapshots
     issues = [o[1] for o in os.walk('./' + temp_dir)][0]
     topics = []
+    viewpoints = []
     for issue in issues:
         markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'))
         #viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
         topics.append(markup)
     shutil.rmtree(temp_dir)
 
-    return topics
+    return {'project':project, 'topics': topics, 'viewpoints': viewpoints }
 
 def run():
-    topics = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip", 'TEMP_EXTRACTED')
-    [print(t) for t in topics]
-
+    data = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip", 'TEMP_EXTRACTED')
+    print(data['project'])
+    #[print(t) for t in data['topics']]
 
 if __name__ == '__main__':
     start = datetime.now()
