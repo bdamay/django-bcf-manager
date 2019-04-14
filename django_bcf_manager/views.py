@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'django-bcf-manager/index.html', {})
+    return render(request, 'django_bcf_manager/index.html', {})

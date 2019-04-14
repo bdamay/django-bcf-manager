@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class MyappConfig(AppConfig):
-    name = 'django-bcf-manager'
+    name = 'django_bcf_manager'

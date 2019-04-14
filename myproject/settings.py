@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webpack_loader',
-    'django-bcf-manager'
+    'django_bcf_manager'
 ]
 
 MIDDLEWARE = [
