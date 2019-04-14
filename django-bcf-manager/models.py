@@ -15,8 +15,8 @@ class Project(ValidateModelMixin, models.Model):
     project_id = models.CharField(max_length=255)
     name =models.CharField(max_length=255)
     extension_schema = models.CharField(max_length=255)
-    created_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-    modified_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
     dt_modification = models.DateTimeField(auto_now=True)
 
@@ -26,8 +26,8 @@ class Project(ValidateModelMixin, models.Model):
 
 class MarkupHeader(ValidateModelMixin, models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    created_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-    modified_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
     dt_modification = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -42,8 +42,8 @@ class MarkupHeaderFilenode(ValidateModelMixin, models.Model):
     filename =  models.CharField(max_length=255, null=True, blank=True)
     date =  models.DateField(null=True, blank=True)
     reference = models.CharField(max_length=255, null=True, blank=True)
-    created_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-    modified_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
     dt_modification = models.DateTimeField(auto_now=True)
 
@@ -56,8 +56,8 @@ class Topic(ValidateModelMixin, models.Model):
     guid = models.CharField(max_length=255)
     topic_type = models.CharField(max_length=255)
     topic_status = models.CharField(max_length=255)
-    created_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
-    modified_by = models.ForeignKey('User', on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
     dt_modification = models.DateTimeField(auto_now=True)
 
