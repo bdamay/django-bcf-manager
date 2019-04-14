@@ -1,0 +1,22 @@
+{% load static from staticfiles %}
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Django BCF Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}"/>
+
+</head>
+<body>
+<h1>Hello my django app</h1>
+<div>Vue component below Hot reload</div>
+<div id="app">
+    <app></app>
+</div>
+
+{% render_bundle 'main' %}
+
+</body>
+</html>
