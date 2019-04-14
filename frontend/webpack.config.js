@@ -6,7 +6,6 @@ var WriteFilePlugin = require('write-file-webpack-plugin')
 module.exports = {
   entry: {
     main : './src/main.js',
-    second : './src/second.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
