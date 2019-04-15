@@ -7,7 +7,7 @@ import glob
 
 SCHEMAS_DIR = '../assets/BCF/Schemas/'
 VERSION_SCHEMA = xmlschema.XMLSchema('../assets/BCF/Schemas/2.1/version.xsd')
-
+DEFAULT_BCF_VERSION = '2.0'
 # assuming schema will not change with version as we need schema to read version...
 
 
@@ -17,7 +17,8 @@ def extract_content_from_bcfzip(filename, snapshots_dir):
         zip_ref.extractall(temp_dir)
 
     # first we need to read version
-    version = '2.0'
+    version_dict = VERSION_SCHEMA.to_dict(os.path.join(temp_dir, 'bcf.version'))
+    version = version_dict['@VersionId'] if '@VersionId' in version_dict else DEFAULT_BCF_VERSION
 
     # then we extract schemas from version
     project_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'project.xsd'))
@@ -33,8 +34,13 @@ def extract_content_from_bcfzip(filename, snapshots_dir):
     viewpoints = []
     for issue in issues:
         markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'))
-        #viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
         topics.append(markup)
+        try:
+            viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
+            viewpoints.append(viewpoint)
+        except Exception as e:
+            print('Viewpoint exception ' + issue + '  '+ e.message)
+            # TODO DEBUG this part seems xmlschema fails on valid Component Element ==> no viewpoints are exported
         #we need to copy snapshots somewhere we can reference them later
         if not os.path.isdir(os.path.join(snapshots_dir, issue)):
             os.mkdir(os.path.join(snapshots_dir, issue))
@@ -43,12 +49,14 @@ def extract_content_from_bcfzip(filename, snapshots_dir):
 
     shutil.rmtree(temp_dir)
 
-    return {'project':project, 'topics': topics, 'viewpoints': viewpoints }
+    return {'project':project, 'topics': topics, 'viewpoints': viewpoints}
 
 def run():
     data = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip",'../media/snapshots')
+    print('project:')
     print(data['project'])
-    #[print(t) for t in data['topics']]
+    print('topics:')
+    [print(t) for t in data['topics']]
 
 if __name__ == '__main__':
     start = datetime.now()
