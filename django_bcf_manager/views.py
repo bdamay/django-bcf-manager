@@ -10,8 +10,15 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.utils.http import urlencode
 
 
+from .models import *
 # Create your views here.
 
 @login_required
 def index(request):
     return render(request, 'django_bcf_manager/index.html', {})
+
+
+@login_required
+def topics(request):
+    topics = Topic.objects.all()
+    return render(request, 'django_bcf_manager/topics.html', {'topics': topics})

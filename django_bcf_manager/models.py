@@ -75,6 +75,9 @@ class Topic(ValidateModelMixin, models.Model):
     def __str__(self):
         return self.guid + ':  ' + self.topic_status + ' - pid ' + self.project.project_id + ' - ' + self.title
 
+    def attrs(self):
+        return [(key, self.__dict__[key]) for key in self.__dict__ if key != '_state']
+
     @staticmethod
     def load_from_bcfdata(topic_data):
         """
@@ -92,7 +95,7 @@ class Topic(ValidateModelMixin, models.Model):
         topic = Topic.objects.filter(guid=guid)
         topic = Topic() if topic.count() == 0 else topic[0]
 
-        topic.project=project[0]
+        topic.project = project[0]
         topic.guid = guid
         topic.topic_type = topic_data['Topic']['@TopicType']
         topic.topic_status = topic_data['Topic']['@TopicStatus']

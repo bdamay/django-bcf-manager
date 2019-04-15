@@ -48,7 +48,7 @@
 {% endblock header %}
 <div class="container-fluid">
     {% block content %}
-
+    <a href="{% url 'topics' %}" > Topics </a>
         {% block vueapp %}
 
             {% load render_bundle from webpack_loader %}
