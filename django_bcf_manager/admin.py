@@ -3,8 +3,7 @@ from .models import *
 
 # Register your models here.
 
-
-
+admin.site.register(BcfFiles)
 admin.site.register(Project)
 admin.site.register(Topic)
 admin.register(TopicLabel)

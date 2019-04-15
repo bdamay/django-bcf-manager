@@ -21,7 +21,7 @@ from django_bcf_manager.lib import bcf_parser
 
 def run():
     # Extract data
-    file = os.path.join(app_settings.ASSETS_DIR,'BCF','examples','Annotations.bcfzip')  # testing purposes
+    file = os.path.join(app_settings.ASSETS_DIR,'BCF','examples','Annotations2.bcfzip')  # testing purposes
     snapshots_dir = app_settings.SNAPSHOTS_DIR
     schemas_dir = os.path.join(app_settings.ASSETS_DIR,'BCF','Schemas')
     data = bcf_parser.extract_content_from_bcfzip(file, snapshots_dir, schemas_dir)

@@ -18,13 +18,11 @@ class ModelMixin(object):
         return [(key, self.__dict__[key]) for key in self.__dict__ if key != '_state']
 
 
-
 class Project(ModelMixin, models.Model):
     project_id = models.CharField(max_length=255)  # spec from BuildingSmart
     name = models.CharField(max_length=255, null=True)  # spec
     extension_schema = models.CharField(max_length=255, null=True,
                                         blank=True)  # spec is not optionnal in 2.1 but optionnal in BCF2.0 so i let it null
-    sourcefile = models.CharField(max_length=255, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
     modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
@@ -51,9 +49,25 @@ class Project(ModelMixin, models.Model):
         project.project_id = project_id
         project.name = project_data['Project']['Name']
         project.extension_schema = project_data['ExtensionSchema']
-        project.sourcefile = project_data['sourcefile']
         project.save()
         return project
+
+
+class BcfFiles(ModelMixin, models.Model):
+    name = models.CharField(max_length=255, blank=True)   # default calculated with file name ?
+    file= models.FileField(upload_to='bcf')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, blank=True, null=True)  # Populate after registration
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
+    dt_creation = models.DateTimeField(auto_now_add=True)
+    dt_modification = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name + ' - created ' + self.dt_creation + ' modif ' + self.dt_modification
+
+    def clean(self):
+        self.name = str(self.file)
+
 
 
 class Topic(ModelMixin, models.Model):
@@ -102,8 +116,8 @@ class Topic(ModelMixin, models.Model):
 
         topic.project = project[0]
         topic.guid = guid
-        topic.topic_type = topic_data['Topic']['@TopicType']
-        topic.topic_status = topic_data['Topic']['@TopicStatus']
+        topic.topic_type = topic_data['Topic']['@TopicType'] if '@TopicType' in topic_data['Topic'] else ''
+        topic.topic_status = topic_data['Topic']['@TopicStatus'] if '@TopicStatus' in topic_data['Topic'] else ''
         # TODO ? topic.reference_link
         topic.title = topic_data['Topic']['Title']
         # TODO topic.priority = topic_data['Topic']['Priority'] if 'Priority' in topic_data['Topic'] else None
