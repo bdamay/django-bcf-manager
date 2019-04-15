@@ -3,13 +3,16 @@ from datetime import datetime
 import zipfile
 import os
 import shutil
+import glob
 
 SCHEMAS_DIR = '../assets/BCF/Schemas/'
 VERSION_SCHEMA = xmlschema.XMLSchema('../assets/BCF/Schemas/2.1/version.xsd')
+
 # assuming schema will not change with version as we need schema to read version...
 
 
-def extract_content_from_bcfzip(filename, temp_dir):
+def extract_content_from_bcfzip(filename, snapshots_dir):
+    temp_dir = 'TEMP_EXTRACTED'
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
 
@@ -32,12 +35,18 @@ def extract_content_from_bcfzip(filename, temp_dir):
         markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'))
         #viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
         topics.append(markup)
+        #we need to copy snapshots somewhere we can reference them later
+        if not os.path.isdir(os.path.join(snapshots_dir, issue)):
+            os.mkdir(os.path.join(snapshots_dir, issue))
+        for filename in glob.glob(os.path.join(temp_dir, issue,'*.png')):
+            shutil.copy(filename, os.path.join(snapshots_dir, issue))
+
     shutil.rmtree(temp_dir)
 
     return {'project':project, 'topics': topics, 'viewpoints': viewpoints }
 
 def run():
-    data = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip", 'TEMP_EXTRACTED')
+    data = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip",'../media/snapshots')
     print(data['project'])
     #[print(t) for t in data['topics']]
 
