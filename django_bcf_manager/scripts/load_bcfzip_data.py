@@ -16,15 +16,19 @@ application = get_wsgi_application()
 from django_bcf_manager.models import *
 from django_bcf_manager import settings as app_settings
 from django.conf import settings
-from django_bcf_manager.lib import bcf_parser as bcfp
-
+from django_bcf_manager.lib import bcf_parser
 
 
 def run():
+    # Extract data
     file = os.path.join(app_settings.ASSETS_DIR,'BCF','examples','Annotations.bcfzip')  # testing purposes
     snapshots_dir = app_settings.SNAPSHOTS_DIR
     schemas_dir = os.path.join(app_settings.ASSETS_DIR,'BCF','Schemas')
-    data = bcfp.extract_content_from_bcfzip(file, snapshots_dir, schemas_dir)
+    data = bcf_parser.extract_content_from_bcfzip(file, snapshots_dir, schemas_dir)
+
+    #insert into model
+    pj = Project.load_from_bcfdata(data['project'])
+
     print(data)
     pass
 

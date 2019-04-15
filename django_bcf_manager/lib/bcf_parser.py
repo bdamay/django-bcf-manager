@@ -30,6 +30,10 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
 
     # getting project info in project.bcfp file
     project = project_schema.to_dict(os.path.join(temp_dir, 'project.bcfp'))
+    project['sourcefile'] = os.path.basename(filename)
+    ## Adding filename to project info - to keep track of source bcffile for project
+
+
 
     #One subdirectory = one BCF issue containing markup.bcf, viewpoint.bcfv and snapshots
     issues = [o[1] for o in os.walk('./' + temp_dir)][0]
