@@ -5,25 +5,28 @@ import os
 import shutil
 import glob
 
-SCHEMAS_DIR = '../assets/BCF/Schemas/'
-VERSION_SCHEMA = xmlschema.XMLSchema('../assets/BCF/Schemas/2.1/version.xsd')
 DEFAULT_BCF_VERSION = '2.0'
 # assuming schema will not change with version as we need schema to read version...
 
 
-def extract_content_from_bcfzip(filename, snapshots_dir):
+def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     temp_dir = 'TEMP_EXTRACTED'
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
 
+
+    if not os.path.isdir(os.path.join(snapshots_dir)):
+        os.mkdir(os.path.join(snapshots_dir))
+
     # first we need to read version
-    version_dict = VERSION_SCHEMA.to_dict(os.path.join(temp_dir, 'bcf.version'))
+    version_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, '2.1','version.xsd'))
+    version_dict = version_schema.to_dict(os.path.join(temp_dir, 'bcf.version'))
     version = version_dict['@VersionId'] if '@VersionId' in version_dict else DEFAULT_BCF_VERSION
 
     # then we extract schemas from version
-    project_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'project.xsd'))
-    markup_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'markup.xsd'))
-    viewpoint_schema = xmlschema.XMLSchema(os.path.join(SCHEMAS_DIR, version, 'visinfo.xsd'))
+    project_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'project.xsd'))
+    markup_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'markup.xsd'))
+    viewpoint_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'visinfo.xsd'))
 
     # getting project info in project.bcfp file
     project = project_schema.to_dict(os.path.join(temp_dir, 'project.bcfp'))
@@ -52,7 +55,8 @@ def extract_content_from_bcfzip(filename, snapshots_dir):
     return {'project':project, 'topics': topics, 'viewpoints': viewpoints}
 
 def run():
-    data = extract_content_from_bcfzip("../media/bcf/Annotations.bcfzip",'../media/snapshots')
+    schema_dir = '../assets/BCF/Schemas'
+    data = extract_content_from_bcfzip('../assets/BCF/examples/Annotations.bcfzip', '../../media/snapshots', schema_dir)
     print('project:')
     print(data['project'])
     print('topics:')
