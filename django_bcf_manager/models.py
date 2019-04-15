@@ -5,14 +5,21 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class ValidateModelMixin(object):
+class ModelMixin(object):
+    """
+    Mixin methods for my Model classes
+    """
     def save(self, *args, **kwargs):
-        """Call :meth:`full_clean` before saving."""
+        """ always Call `full_clean` method when saving."""
         self.full_clean()
-        super(ValidateModelMixin, self).save(*args, **kwargs)
+        super(ModelMixin, self).save(*args, **kwargs)
+
+    def attrs(self):
+        return [(key, self.__dict__[key]) for key in self.__dict__ if key != '_state']
 
 
-class Project(ValidateModelMixin, models.Model):
+
+class Project(ModelMixin, models.Model):
     project_id = models.CharField(max_length=255)  # spec from BuildingSmart
     name = models.CharField(max_length=255, null=True)  # spec
     extension_schema = models.CharField(max_length=255, null=True,
@@ -49,7 +56,7 @@ class Project(ValidateModelMixin, models.Model):
         return project
 
 
-class Topic(ValidateModelMixin, models.Model):
+class Topic(ModelMixin, models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     guid = models.CharField(max_length=255)  # spec
     topic_type = models.CharField(max_length=255, null=True, blank=True)  # spec
@@ -75,8 +82,6 @@ class Topic(ValidateModelMixin, models.Model):
     def __str__(self):
         return self.guid + ':  ' + self.topic_status + ' - pid ' + self.project.project_id + ' - ' + self.title
 
-    def attrs(self):
-        return [(key, self.__dict__[key]) for key in self.__dict__ if key != '_state']
 
     @staticmethod
     def load_from_bcfdata(topic_data):
@@ -114,23 +119,23 @@ class Topic(ValidateModelMixin, models.Model):
         return topic
 
 
-class TopicReference(ValidateModelMixin, models.Model):
+class TopicReference(ModelMixin, models.Model):
     reference = models.CharField(max_length=255)
 
 
-class TopicPriority(ValidateModelMixin, models.Model):
+class TopicPriority(ModelMixin, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class TopicLabel(ValidateModelMixin, models.Model):
+class TopicLabel(ModelMixin, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class TopicStage(ValidateModelMixin, models.Model):
+class TopicStage(ModelMixin, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class MarkupHeaderFilenode(ValidateModelMixin, models.Model):
+class MarkupHeaderFilenode(ModelMixin, models.Model):
     """
     No MarkupHeader class as it contains no attributes - i choose to implement only the MarkupFileNode  in relation with Topic
     """
