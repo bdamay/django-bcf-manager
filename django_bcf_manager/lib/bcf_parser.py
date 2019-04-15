@@ -10,6 +10,15 @@ DEFAULT_BCF_VERSION = '2.0'
 
 
 def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
+    """
+    All in one:
+    Extract and return data for on bcfzip file
+    Store snapshots into snapshot directory for further use
+    :param filename:
+    :param snapshots_dir:
+    :param schemas_dir:
+    :return: Dict data of the bcfzip file
+    """
     temp_dir = 'TEMP_EXTRACTED'
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
@@ -30,10 +39,10 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
 
     # getting project info in project.bcfp file
     project = project_schema.to_dict(os.path.join(temp_dir, 'project.bcfp'))
-    project['sourcefile'] = os.path.basename(filename)
     ## Adding filename to project info - to keep track of source bcffile for project
+    project['sourcefile'] = os.path.basename(filename)
 
-
+    pid = project['Project']['@ProjectId']  # keep track of pid
 
     #One subdirectory = one BCF issue containing markup.bcf, viewpoint.bcfv and snapshots
     issues = [o[1] for o in os.walk('./' + temp_dir)][0]
@@ -41,13 +50,15 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     viewpoints = []
     for issue in issues:
         markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'))
+        markup['project_id'] = pid # adding pid info on markup
         topics.append(markup)
         try:
+            # TODO DEBUG seems xmlschema fails on valid Component Element ==> no viewpoints are valid nor exported
             viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
+            viewpoint['project_id'] = pid # keeping track of pid on data
             viewpoints.append(viewpoint)
         except Exception as e:
             print('Viewpoint exception ' + issue + '  '+ e.message)
-            # TODO DEBUG this part seems xmlschema fails on valid Component Element ==> no viewpoints are exported
         #we need to copy snapshots somewhere we can reference them later
         if not os.path.isdir(os.path.join(snapshots_dir, issue)):
             os.mkdir(os.path.join(snapshots_dir, issue))

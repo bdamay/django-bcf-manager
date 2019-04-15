@@ -29,6 +29,9 @@ def run():
     #insert into model
     pj = Project.load_from_bcfdata(data['project'])
 
+    for topic in data['topics']:
+        Topic.load_from_bcfdata(topic)
+
     print(data)
     pass
 
