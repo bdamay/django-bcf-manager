@@ -1,21 +1,40 @@
 {% extends "django_bcf_manager/index.html" %}
 
 {% block content %}
-    <h1>Topic list </h1>
-    <table class="table table-bordered table-striped table-responsive">
+    <h1>{{ topics.count }} Topics </h1>
+    <table class=" table table-bordered table-striped table-responsive">
         <colgroup>
             <col class="col">
             <col class="col">
         </colgroup>
-        <tr>
-            <th>Topics</th>
-            <th>img</th>
-        </tr>
         {% for topic in topics %}
             <tr>
                 <td>
                     <table class="table table-sm">
-                        {% for key, value in topic.attrs  %}
+                        <tr>
+                            <th>creation_date</th>
+                            <th>creation_author</th>
+                            <th>Title</th>
+                            <th>status</th>
+                            <th>assigné à</th>
+                            <th>due_date</th>
+                            <th>modified_date</th>
+                        </tr>
+                        <tr>
+                            <td>{{ topic.creation_date }}</td>
+                            <td>{{ topic.creation_author }}</td>
+                            <td>{{ topic.title }}</td>
+                            <td>{{ topic.topic_status }}</td>
+                            <td>{{ topic.assigned_to }}</td>
+                            <td>{{ topic.due_date }}</td>
+                            <td> {{ topic.modified_date }}</td>
+                    </table>
+                    <button class="btn col-2  bg-light float-right text-center " data-toggle="collapse"
+                            data-target="#topic-detail{{ topic.id }}">toggle detail
+                    </button>
+                    <table class="collapse table table-sm " id="topic-detail{{ topic.id }}">
+
+                        {% for key, value in topic.attrs %}
                             <tr>
                                 <td>{{ key }}</td>
                                 <td>{{ value }}</td>
@@ -23,7 +42,22 @@
                         {% endfor %}
                     </table>
                 </td>
-                <td><img style="width:300px" src="/media/snapshots/{{ topic.guid }}/snapshot.png"/></td>
+                <td>
+                    <div data-toggle="collapse" data-target="snapshot{{ topic.id }}">
+                        <img style="display: block; height:200px; margin: auto"
+                             src="/media/snapshots/{{ topic.guid }}/snapshot.png"/>
+                        <button class="col-12 btn bg-light float-right text-center pointer" data-toggle="collapse"
+                                data-target="#snapshot{{ topic.id }}">toggle full size
+                        </button>
+                    </div>
+                    <div class="bg-light collapse screen_centered front bordered-5" id="snapshot{{ topic.id }}">
+                        <button class="btn btn-secondary float-right " data-toggle="collapse"
+                                data-target="#snapshot{{ topic.id }}">Close
+                        </button>
+                        <img style=" max-width:100vh; max-height: 90vh"
+                             src="/media/snapshots/{{ topic.guid }}/snapshot.png"/>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
     </table>

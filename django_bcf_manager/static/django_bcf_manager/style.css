@@ -1,3 +1,29 @@
 .navbar-brand {
     background-image: url("/static/django_bcf_manager/BCFicon.ico");
 }
+
+.pointer:hover {
+    background-color: #cccccc;
+}
+.pointer {
+    cursor: pointer;
+}
+
+.screen_centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+
+}
+
+.front {
+    z-index: 100000;
+}
+
+.bordered-5 {
+    border:5px solid gray;
+    border-radius: 5px;
+
+}

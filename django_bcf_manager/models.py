@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django_bcf_manager.lib import bcf_parser
+from django_bcf_manager import settings as app_settings
+import os
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 # Create your models here.
 
@@ -30,7 +36,7 @@ class Project(ModelMixin, models.Model):
 
     def __str__(self):
         return str(
-            self.id) + ': ' + self.name + ' - from ' + self.sourcefile + ' - pid: ' + self.project_id + ' created_at ' + str(
+            self.id) + ': ' + self.name + ' - pid: ' + self.project_id + ' created_at ' + str(
             self.dt_creation) + ' - modified ' + str(self.dt_modification)
 
     @staticmethod
@@ -53,20 +59,40 @@ class Project(ModelMixin, models.Model):
         return project
 
 
-class BcfFiles(ModelMixin, models.Model):
+class BcfFile(ModelMixin, models.Model):
+    """
+    Main source for BCF data - start with BCFFile to populate Topic data in model
+    """
     name = models.CharField(max_length=255, blank=True)   # default calculated with file name ?
     file= models.FileField(upload_to='bcf')
     project = models.ForeignKey('Project', on_delete=models.CASCADE, blank=True, null=True)  # Populate after registration
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
     dt_creation = models.DateTimeField(auto_now_add=True)
-    dt_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + ' - created ' + self.dt_creation + ' modif ' + self.dt_modification
+        return self.name + '(uploaded ' + str(self.dt_creation)+')'
 
     def clean(self):
         self.name = str(self.file)
+
+    def handlePostRequest(self,request):
+        pass
+
+@receiver(post_save, sender=BcfFile)
+def bcffile_post_save(sender, **kwargs):
+    """
+    After saving examine if we have to load bcf
+    Might be better to move this code somewhere else ?
+    """
+    snapshots_dir = app_settings.SNAPSHOTS_DIR
+    schemas_dir = os.path.join(app_settings.ASSETS_DIR, 'BCF', 'Schemas')
+    filepath = kwargs['instance'].file.path
+    data = bcf_parser.extract_content_from_bcfzip(filepath, snapshots_dir, schemas_dir)
+
+    # insert into model
+    pj = Project.load_from_bcfdata(data['project'])
+    for topic in data['topics']:
+        Topic.load_from_bcfdata(topic)
 
 
 

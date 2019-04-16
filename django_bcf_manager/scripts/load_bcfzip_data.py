@@ -21,19 +21,18 @@ from django_bcf_manager.lib import bcf_parser
 
 def run():
     # Extract data
-    file = os.path.join(app_settings.ASSETS_DIR,'BCF','examples','Annotations2.bcfzip')  # testing purposes
+    file = os.path.join(app_settings.ASSETS_DIR,'BCF','examples','from_bcfier.bcfzip')  # testing purposes
     snapshots_dir = app_settings.SNAPSHOTS_DIR
     schemas_dir = os.path.join(app_settings.ASSETS_DIR,'BCF','Schemas')
     data = bcf_parser.extract_content_from_bcfzip(file, snapshots_dir, schemas_dir)
 
     #insert into model
     pj = Project.load_from_bcfdata(data['project'])
-
     for topic in data['topics']:
         Topic.load_from_bcfdata(topic)
 
     print(data)
-    pass
+    return
 
 
 if __name__ == '__main__':
