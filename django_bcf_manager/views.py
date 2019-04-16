@@ -27,13 +27,12 @@ def topics(request):
 
 @login_required
 def bcffile_add(request):
-    c = {}
     if request.method == 'POST':
         form = BCFFileForm(request.POST, request.FILES)
         if form.is_valid():
-            bcffileobj = BcfFile() # new object
-            bcffileobj.handlePostRequest(request)
-            return redirect('ifc_summary',ifc_id=bcffileobj.id)
+            form.save()
+            return redirect('topics')
     else:
-        c['form'] = BcfFile()
-    return render(request, 'django_bcf_manager/addfile.html',c)
+        form = BCFFileForm()
+
+    return render(request, 'django_bcf_manager/addfile.html',{'form':form})
