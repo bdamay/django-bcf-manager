@@ -7,5 +7,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('topics', views.topics, name='topics'),
-    path('bcffile/add', views.addfile, name='addfile')
+    path('bcffile/add', views.bcffile_add, name='addfile')
 ]
