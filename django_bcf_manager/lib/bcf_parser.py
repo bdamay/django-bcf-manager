@@ -22,6 +22,10 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     :return: Dict data of the bcfzip file
     """
     temp_dir = 'TEMP_EXTRACTED'
+    try:
+        shutil.rmtree(temp_dir)
+    except:
+        pass
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
 

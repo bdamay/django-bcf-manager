@@ -75,12 +75,7 @@ class BcfFile(ModelMixin, models.Model):
     def clean(self):
         self.name = str(self.file)
 
-    def handlePostRequest(self,request):
-        if 'file' in request.FILES:
-            self.file = request.FILES['file']
-        self.summary_data = ifc.get_summary_data()  # get json qtys (raises if qty not present)
-        self.save()
-        pass
+
 
 @receiver(post_save, sender=BcfFile)
 def bcffile_post_save(sender, **kwargs):
