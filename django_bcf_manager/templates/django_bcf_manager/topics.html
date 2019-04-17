@@ -19,7 +19,7 @@
                             <th>creation_author</th>
                             <th>Title</th>
                             <th>status</th>
-                            <th>assigné à</th>
+                            <th>assigned_to</th>
                             <th>due_date</th>
                             <th>modified_date</th>
                         </tr>
@@ -32,7 +32,7 @@
                             <td>{{ topic.due_date }}</td>
                             <td>{{ topic.modified_date }}</td>
                     </table>
-                    <button class="btn col-2  bg-light float-right text-center " data-toggle="collapse"
+                    <button class="btn btn-sm col-2  bg-light float-right text-center " data-toggle="collapse"
                             data-target="#topic-detail{{ topic.id }}">toggle detail
                     </button>
                     <table class="collapse table table-sm " id="topic-detail{{ topic.id }}">
@@ -47,14 +47,14 @@
                 </td>
                 <td>
                     <div data-toggle="collapse" data-target="snapshot{{ topic.id }}">
-                        <img style="display: block; height:200px; margin: auto"
+                        <img style="display: block; max-height:78px; margin: auto"
                              src="/media/snapshots/{{ topic.guid }}/snapshot.png"/>
                         <button class="col-12 btn bg-light float-right text-center pointer" data-toggle="collapse"
                                 data-target="#snapshot{{ topic.id }}">toggle full size
                         </button>
                     </div>
                     <div class="bg-light collapse screen_centered front bordered-5" id="snapshot{{ topic.id }}">
-                        <button class="btn btn-secondary float-right " data-toggle="collapse"
+                        <button class="btn btn-secondary btn-sm float-right " data-toggle="collapse"
                                 data-target="#snapshot{{ topic.id }}">Close
                         </button>
                         <img style=" max-width:100vh; max-height: 90vh"

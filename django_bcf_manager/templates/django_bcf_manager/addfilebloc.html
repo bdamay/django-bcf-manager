@@ -1,7 +1,8 @@
 
 <form method="POST" action="" enctype="multipart/form-data">
 {% csrf_token %}
-<div class="col">{{ form.as_p }}</div><div class="col"><button type="submit">Envoyer</button></div>
+{{ form.file }}
+    <button class="btn btn-primary" type="submit">Envoyer</button>
 
 </form>
 

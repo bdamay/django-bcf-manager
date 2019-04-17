@@ -16,7 +16,7 @@ class BootstrapModelForm(forms.ModelForm):
                 'title':self.fields[field].label
             })
 
-class BCFFileForm(BootstrapModelForm):
+class BCFFileForm(forms.ModelForm):
     class Meta:
         model = BcfFile
         fields = ['file']
