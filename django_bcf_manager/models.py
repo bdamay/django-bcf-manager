@@ -106,7 +106,7 @@ class Topic(ModelMixin, models.Model):
     index = models.IntegerField(null=True, blank=True)  # spec element
     labels = models.ManyToManyField('TopicLabel')  # spec element
     creation_date = models.CharField(max_length=255, null=True, blank=True)  # spec element (ISO char)
-    creation_author = models.CharField(max_length=255)  # spec element
+    creation_author = models.CharField(max_length=255, blank=True)  # spec element
     modified_date = models.CharField(max_length=255, null=True, blank=True)  # spec element (ISO char)
     modified_author = models.CharField(max_length=255, null=True, blank=True)  # spec element
     due_date = models.DateTimeField(null=True, blank=True)  # spec element
@@ -148,8 +148,8 @@ class Topic(ModelMixin, models.Model):
         # TODO topic.priority = topic_data['Topic']['Priority'] if 'Priority' in topic_data['Topic'] else None
         topic.index = int(topic_data['Topic']['Index']) if 'Index' in topic_data['Topic'] else 0
         # TODO topic.labels = topic_data['Topic']['Priority'] if 'Priority' in topic_data['Topic']
-        topic.creation_date = topic_data['Topic']['CreationDate']
-        topic.creation_author = topic_data['Topic']['CreationAuthor']
+        topic.creation_date = topic_data['Topic']['CreationDate'] if 'CreationAuthor' in topic_data['Topic'] else ''
+        topic.creation_author = topic_data['Topic']['CreationAuthor'] if 'CreationAuthor' in topic_data['Topic'] else ''
         topic.modified_date = topic_data['Topic']['ModifiedDate'] if 'ModifiedDate' in topic_data['Topic'] else ''
         topic.modified_author = topic_data['Topic']['ModifiedAuthor'] if 'ModifiedAuthor' in topic_data['Topic'] else ''
 

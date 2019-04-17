@@ -42,9 +42,9 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     print('version', version)
 
     # then we extract schemas from version
-    project_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'project.xsd'))
-    markup_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'markup.xsd'))
-    viewpoint_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'visinfo.xsd'))
+    project_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'project.xsd'), validation='skip')
+    markup_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'markup.xsd'), validation='skip')
+    viewpoint_schema = xmlschema.XMLSchema(os.path.join(schemas_dir, version, 'visinfo.xsd'), validation='skip')
 
     # getting project info in project.bcfp file (optionnal file so we catch
     try:
@@ -101,4 +101,3 @@ if __name__ == '__main__':
     end = datetime.now()
     print('end: ', end)
 
-print('Ending')

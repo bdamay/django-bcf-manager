@@ -21,12 +21,7 @@ def index(request):
 
 @login_required
 def topics(request):
-    topics = Topic.objects.all().order_by('-dt_modification')
-    return render(request, 'django_bcf_manager/topics.html', {'topics': topics})
-
-
-@login_required
-def bcffile_add(request):
+    # POST means a new file
     if request.method == 'POST':
         form = BCFFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -34,5 +29,6 @@ def bcffile_add(request):
             return redirect('topics')
     else:
         form = BCFFileForm()
+    topics = Topic.objects.all().order_by('-dt_modification')
+    return render(request, 'django_bcf_manager/topics.html', {'topics': topics, 'form': form})
 
-    return render(request, 'django_bcf_manager/addfile.html',{'form':form})

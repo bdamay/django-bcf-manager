@@ -1,7 +1,10 @@
 {% extends "django_bcf_manager/index.html" %}
 
 {% block content %}
-    <h1>{{ topics.count }} Topics </h1>
+    <div class="row">
+        <div class="col-6"><h1>{{ topics.count }} Topics</h1></div>
+        <div class="col-6">  {% include 'django_bcf_manager/addfilebloc.html' %}</div>
+    </div>
     <table class=" table table-bordered table-striped table-responsive">
         <colgroup>
             <col class="col">
@@ -27,7 +30,7 @@
                             <td>{{ topic.topic_status }}</td>
                             <td>{{ topic.assigned_to }}</td>
                             <td>{{ topic.due_date }}</td>
-                            <td> {{ topic.modified_date }}</td>
+                            <td>{{ topic.modified_date }}</td>
                     </table>
                     <button class="btn col-2  bg-light float-right text-center " data-toggle="collapse"
                             data-target="#topic-detail{{ topic.id }}">toggle detail
