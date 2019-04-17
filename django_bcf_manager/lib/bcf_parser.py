@@ -8,6 +8,8 @@ import uuid
 from urllib.error import URLError
 
 DEFAULT_BCF_VERSION = '2.0'
+
+
 # assuming schema will not change with version as we need schema to read version...
 
 
@@ -49,7 +51,8 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
         project = project_schema.to_dict(os.path.join(temp_dir, 'project.bcfp'))
     except URLError as e:
         print('Error opening project.bcfp - probably missing as it is optionnal')
-        project = {'Project': {'@ProjectId':uuid.uuid1(), 'Name': 'Undefined' }, 'ExtensionSchema':''}  # initiate project object in case project.bcfp does not exist
+        project = {'Project': {'@ProjectId': uuid.uuid1(), 'Name': 'Undefined'},
+                   'ExtensionSchema': ''}  # initiate project object in case project.bcfp does not exist
 
     pid = project['Project']['@ProjectId']  # keep track of pid for topics
 
@@ -58,13 +61,15 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     topics = []
     viewpoints = []
     for issue in issues:
-        markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'))
+        markup = markup_schema.to_dict(os.path.join(temp_dir, issue, 'markup.bcf'),
+                                       validation='skip')  # strict is failing so often !!! (try to get some data even if corrrupted)
         markup['project_id'] = pid  # adding pid info on markup
         topics.append(markup)
         try:
             # TODO DEBUG seems xmlschema fails on valid Component Element ==> no viewpoints are valid nor exported
             # may be should i try less stric control on xmlschema
-            viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'))
+            viewpoint = viewpoint_schema.to_dict(os.path.join(temp_dir, issue, 'viewpoint.bcfv'),
+                                                 validation='skip')  # strict is failing so often !!! (try to get some data even if corrrupted)
             viewpoint['project_id'] = pid  # keeping track of pid on data
             viewpoints.append(viewpoint)
         except Exception as e:
