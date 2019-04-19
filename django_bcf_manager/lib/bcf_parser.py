@@ -73,7 +73,7 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
             viewpoint['project_id'] = pid  # keeping track of pid on data
             viewpoints.append(viewpoint)
         except Exception as e:
-            print('Viewpoint exception ' + issue + '  ' + e.message)
+            print('Viewpoint exception -- may be missing or incorrect' )
         # we need to copy snapshots somewhere we can reference them later
         if not os.path.isdir(os.path.join(snapshots_dir, issue)):
             os.mkdir(os.path.join(snapshots_dir, issue))

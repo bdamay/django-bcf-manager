@@ -14,7 +14,7 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 from django_bcf_manager.models import *
-from django_bcf_manager import settings as app_settings
+from django_bcf_manager import app_settings as app_settings
 from django.conf import settings
 from django_bcf_manager.lib import bcf_parser
 

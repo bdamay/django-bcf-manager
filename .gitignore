@@ -2,6 +2,8 @@
 node_modules
 frontend/dist
 frontend/webpack-stats.json
+db.sqlite3
+
 
 # local env files
 .env.local

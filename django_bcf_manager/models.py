@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from django_bcf_manager.lib import bcf_parser
-from django_bcf_manager import settings as app_settings
+from django_bcf_manager import app_settings as app_settings
 import os
 from django.db.models.signals import post_save
 from django.dispatch import receiver

@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 # from django.utils.http import urlencode
 from django_bcf_manager.forms import *
 
+from rest_framework import viewsets
+from .serializers import TopicSerializer
+
 
 from .models import *
 # Create your views here.
@@ -32,3 +35,11 @@ def topics(request):
     topics = Topic.objects.all().order_by('-dt_modification')
     return render(request, 'django_bcf_manager/topics.html', {'topics': topics, 'form': form})
 
+
+# API views
+class TopicViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Topic.objects.all().order_by('-dt_modification')
+    serializer_class = TopicSerializer
