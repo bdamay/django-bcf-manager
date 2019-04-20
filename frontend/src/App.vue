@@ -9,7 +9,7 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Django BCF Manager Vue APP'
+      msg: 'BCF Manager VueJS Frontend '
     }
   }
 }
