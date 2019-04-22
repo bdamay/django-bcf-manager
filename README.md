@@ -1,5 +1,7 @@
 # BCF Manager
-## Powered by Django, DRF, and VueJS
+## Powered by Django, DRF 
+
+This project is just starting. Don't expect it to work without bugs
 
 ### Purpose
 
@@ -11,9 +13,9 @@ API is documented here: https://github.com/buildingSMART/BCF-API
 
 ### Targeted features  - roadmap 
 
-- Load bcfzip file into dedicated django model
+- Load bcfzip files into dedicated django model (V2.0 V2.1)
 - Provide managing tools to visualize/manipulate/merge issues from different sources
-- Re-export model data to bcfzip (with custom filters)
+- Export model data to bcfzip (with custom filters) 
 - Implement BCF-API with DRF to remotely manipulate data according to BCF-API specification
 
 - Might try to link to an ifc hosted on a bimserver someday (see https://github.com/opensourceBIM/BIMserver)
