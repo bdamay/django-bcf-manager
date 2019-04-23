@@ -13,12 +13,12 @@ API is documented here: https://github.com/buildingSMART/BCF-API
 
 ### Targeted features  - roadmap 
 
-- Load bcfzip files into dedicated django model (V2.0 V2.1)
-- Provide managing tools to visualize/manipulate/merge issues from different sources
+- Load bcfzip files into dedicated django model (BCF V2.0 V2.1)
+- Provide managing tools to visualize/manipulate/merge/add issues from different sources 
 - Export model data to bcfzip (with custom filters) 
-- Implement BCF-API with DRF to remotely manipulate data according to BCF-API specification
+- Implement BCF-API with DRF to remotely manipulate data according to BCF-API specification (BCFServer)
 
-- Might try to link to an ifc hosted on a bimserver someday (see https://github.com/opensourceBIM/BIMserver)
+- Provide links to an ifc hosted on a bimserver (see https://github.com/opensourceBIM/BIMserver)
 
 ### quickstart for developpers
 
@@ -37,14 +37,14 @@ $ python manage.py runserver
 
 You should then have 
 
-vuecli app running  at http://localhost:8080/
+vuecli app running  at http://localhost:8080/ 
 django app running at http://localhost:8000/ 
 
 ### Notes 
 
-Repository provides the full django project in myproject folder, it might not suit your needs. 
-You can of course use your project instead and keep only the django app and frontend. 
-Make sure you provide correct information into your setting files mostly regarding webpackloader ans VueJS.
+Repository provides the full django project in "myproject" folder, it might not suit your needs. 
+You can of course use your own project instead and keep only the django app and frontend or whatever you want to use. 
+Make sure you provide correct information regarding webpackloader ans VueJS into your setting files if you want VueJS to work properly.
 
 ### Deploiement 
 
