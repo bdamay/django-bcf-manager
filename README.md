@@ -1,7 +1,7 @@
 # BCF Manager
 ## Powered by Django, DRF 
 
-This project is just starting. Don't expect it to work without bugs
+*This project is just starting. Don't expect its functionnality to be complete*
 
 ### Purpose
 
