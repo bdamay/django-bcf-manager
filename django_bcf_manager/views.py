@@ -32,7 +32,7 @@ def topics(request):
             return redirect('topics')
     else:
         form = BCFFileForm()
-    topics = Topic.objects.all().order_by('-dt_modification')
+    topics = Topic.objects.all().order_by('-creation_date')
     return render(request, 'django_bcf_manager/topics.html', {'topics': topics, 'form': form})
 
 
@@ -41,5 +41,5 @@ class TopicViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Topic.objects.all().order_by('-dt_modification')
+    queryset = Topic.objects.all().order_by('-creation_date')
     serializer_class = TopicSerializer

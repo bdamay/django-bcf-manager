@@ -2,6 +2,6 @@ git pull
 python manage.py collectstatic --noinput
 python manage.py migrate
 cd frontend
-npm install
-npm run build
+call npm install
+call npm run build
 cd ..
