@@ -39,15 +39,15 @@ You should then have
 
 vuecli app running  at http://localhost:8080/ 
 django app running at http://localhost:8000/ 
+api is at http://localhost:8000/api
 
 
 For now access index of the django app, you need to be connected to a django account 
 (you can use your supersuser account and connect via the admin login)
 
-For now (2020 10 20), you can just load a bcf zip at /topic url and look at your issues that's pretty much it.
-I'm working on next steps. 
-
-
+For now (2020 10 20), 
+- you can just load a bcf zip at /topic url and look at your issues that's pretty much it.
+- api is not implemented (topics are just listed in a minimal way). 
 
 
 
