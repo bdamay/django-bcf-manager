@@ -1,5 +1,5 @@
 altgraph==0.16.1
-Django==2.2
+Django>3
 django-webpack-loader==0.6.0
 elementpath==1.1.6
 future==0.17.1
@@ -8,5 +8,7 @@ pefile==2019.4.14
 PyInstaller==3.4
 pytz==2019.1
 pywin32-ctypes==0.2.0
-sqlparse==0.3.0
+sqlparse==0.4.1
 xmlschema==1.0.10
+djangorestframework==3.12.1
+psycopg2

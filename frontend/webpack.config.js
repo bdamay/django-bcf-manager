@@ -4,6 +4,7 @@ var BundleTracker = require('webpack-bundle-tracker')
 var WriteFilePlugin = require('write-file-webpack-plugin')
 
 module.exports = {
+  mode:'production',
   entry: {
     main : './src/main.js',
   },
@@ -94,6 +95,7 @@ module.exports = {
   devtool: '#eval-source-map'
 }
 
+
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
@@ -103,14 +105,9 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
   ])
 }
+
