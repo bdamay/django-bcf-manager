@@ -6,4 +6,4 @@ from rest_framework import serializers
 class TopicSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Topic
-        exclude = []
+        fields = ['guid', 'topic_type', 'title']

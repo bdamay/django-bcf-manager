@@ -176,7 +176,8 @@ class TopicStage(ModelMixin, models.Model):
 
 class MarkupHeaderFilenode(ModelMixin, models.Model):
     """
-    No MarkupHeader class as it contains no attributes - i choose to implement only the MarkupFileNode  in relation with Topic
+    No MarkupHeader class as it contains no attributes -
+    i choose to implement only the MarkupFileNode  in relation with Topic
     """
     topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
     ifc_project = models.CharField(max_length=255, null=True, blank=True)
