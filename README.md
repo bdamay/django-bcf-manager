@@ -1,15 +1,19 @@
 # BCF Manager
 ## Powered by Django, DRF 
 
-*This project is just starting. Don't expect its functionnality to be complete*
+*This project is a work in progress, and sometimes a (very) slow work in progress. Don't expect its functionnality to be complete
+Feel free to send me a message if you want to provide help 
+*
 
-### Purpose
+### Main Goal - Purpose
 
-Django BCF Manager purpose is to give web tools for managing BCF files. 
 BCF is a format for managing issues on a BIM project. 
+Django BCF Manager purpose is to give web tools for managing BCF files. 
 
-For more information about this format see https://github.com/buildingSMART/BCF-XML. 
-API is documented here: https://github.com/buildingSMART/BCF-API
+- Backend = Django with DRF wich purpose is to implement BCF-API as documented here: https://github.com/buildingSMART/BCF-API
+- Frontend = VueJS app that consumes API and provide some UI views to mainly CRUD operations.   
+
+At some point we might separate in two distinct repositories that could be imported as modules in another app. 
 
 ### Targeted features  - roadmap 
 
