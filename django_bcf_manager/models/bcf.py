@@ -7,32 +7,37 @@ import os
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from . import *
 
-# Create your models here.
 
-
-class ModelMixin(object):
+class BcfFile(ModelBase, models.Model):
     """
-    Mixin methods for my Model classes
+    Model for importing external bcf files import
     """
-    def save(self, *args, **kwargs):
-        """ always Call `full_clean` method when saving."""
-        self.full_clean()
-        super(ModelMixin, self).save(*args, **kwargs)
+    name = models.CharField(max_length=255, blank=True)   # default calculated with file name ?
+    file= models.FileField(upload_to='bcf')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE, blank=True, null=True)  # Populate after registration
 
-    def attrs(self):
-        return [(key, self.__dict__[key]) for key in self.__dict__ if key != '_state']
+    def __str__(self):
+        return self.name + '(uploaded ' + str(self.dt_creation)+')'
+
+    def clean(self):
+        self.name = str(self.file)
 
 
-class Project(ModelMixin, models.Model):
+
+class Project(ModelBase, models.Model):
+    """
+    Project model => see BCF Projects api definition
+    """
     project_id = models.CharField(max_length=255)  # spec from BuildingSmart
     name = models.CharField(max_length=255, null=True)  # spec
     extension_schema = models.CharField(max_length=255, null=True,
                                         blank=True)  # spec is not optionnal in 2.1 but optionnal in BCF2.0 so i let it null
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    dt_creation = models.DateTimeField(auto_now_add=True)
-    dt_modification = models.DateTimeField(auto_now=True)
+    creation_date = models.CharField(max_length=255, null=True, blank=True)  # spec element (ISO char)
+    creation_author = models.CharField(max_length=255, blank=True)  # spec element
+    modified_date = models.CharField(max_length=255, null=True, blank=True)  # spec element (ISO char)
+    modified_author = models.CharField(max_length=255, null=True, blank=True)  # spec element
 
     def __str__(self):
         return str(
@@ -53,27 +58,10 @@ class Project(ModelMixin, models.Model):
         project = Project() if project.count() == 0 else project[0]
 
         project.project_id = project_id
-        project.name = project_data['Project']['Name']
+        project.name = project_data['Project']['Name'] if 'Name' in project_data['Project'] else 'default_name'
         project.extension_schema = project_data['ExtensionSchema']
         project.save()
         return project
-
-
-class BcfFile(ModelMixin, models.Model):
-    """
-    Main source for BCF data - start with BCFFile to populate Topic data in model
-    """
-    name = models.CharField(max_length=255, blank=True)   # default calculated with file name ?
-    file= models.FileField(upload_to='bcf')
-    project = models.ForeignKey('Project', on_delete=models.CASCADE, blank=True, null=True)  # Populate after registration
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    dt_creation = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name + '(uploaded ' + str(self.dt_creation)+')'
-
-    def clean(self):
-        self.name = str(self.file)
 
 
 
@@ -95,7 +83,7 @@ def bcffile_post_save(sender, **kwargs):
 
 
 
-class Topic(ModelMixin, models.Model):
+class Topic(ModelBase, models.Model):
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     guid = models.CharField(max_length=255)  # spec
     topic_type = models.CharField(max_length=255, null=True, blank=True)  # spec
@@ -113,10 +101,6 @@ class Topic(ModelMixin, models.Model):
     assigned_to = models.CharField(max_length=255, null=True, blank=True)  # spec element
     description = models.CharField(max_length=2048, null=True, blank=True)  # spec element
     stage = models.ManyToManyField('TopicStage')  # spec element
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
-    dt_creation = models.DateTimeField(auto_now_add=True)
-    dt_modification = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.guid + ':  ' + self.topic_status + ' - pid ' + self.project.project_id + ' - ' + self.title
@@ -158,23 +142,23 @@ class Topic(ModelMixin, models.Model):
         return topic
 
 
-class TopicReference(ModelMixin, models.Model):
+class TopicReference(ModelBase, models.Model):
     reference = models.CharField(max_length=255)
 
 
-class TopicPriority(ModelMixin, models.Model):
+class TopicPriority(ModelBase, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class TopicLabel(ModelMixin, models.Model):
+class TopicLabel(ModelBase, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class TopicStage(ModelMixin, models.Model):
+class TopicStage(ModelBase, models.Model):
     priority = models.CharField(max_length=255)
 
 
-class MarkupHeaderFilenode(ModelMixin, models.Model):
+class MarkupHeaderFilenode(ModelBase, models.Model):
     """
     No MarkupHeader class as it contains no attributes -
     i choose to implement only the MarkupFileNode  in relation with Topic

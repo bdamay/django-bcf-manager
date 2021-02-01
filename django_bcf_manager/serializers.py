@@ -1,6 +1,12 @@
 from django.contrib.auth.models import User, Group
-from .models import Topic
+from .models import *
 from rest_framework import serializers
+
+
+class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Project
+        exclude = [ ]
 
 
 class TopicSerializer(serializers.HyperlinkedModelSerializer):

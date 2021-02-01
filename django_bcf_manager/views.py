@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django_bcf_manager.forms import *
 
 from rest_framework import viewsets
-from .serializers import TopicSerializer
+from .serializers import *
 
 
 from .models import *
@@ -35,8 +35,16 @@ def topics(request):
     topics = Topic.objects.all().order_by('-creation_date')
     return render(request, 'django_bcf_manager/topics.html', {'topics': topics, 'form': form})
 
-
+######################
 # API views
+######################
+class ProjectViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Project.objects.all().order_by('-creation_date')
+    serializer_class = ProjectSerializer
+
 class TopicViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
