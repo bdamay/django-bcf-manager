@@ -2,7 +2,7 @@ altgraph==0.16.1
 Django>3
 django-webpack-loader==0.6.0
 pytz==2019.1
-sqlparse==0.4.1
+sqlparse==0.4.2
 xmlschema==1.0.10
 djangorestframework==3.12.1
 psycopg2
