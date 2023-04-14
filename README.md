@@ -32,12 +32,12 @@ At some point we might separate in two distinct repositories that could be impor
 $ git clone https://github.com/bdamay/django-bcf-manager.git
 $ cd  django-bcf-manager
 $ pip install -r requirements.txt 
-$ python manage.py collectstatic --noinput
 $ python manage.py migrate  
 $ cd frontend 
 $ npm install
 $ npm run dev 
 $ cd .. 
+$ python manage.py collectstatic --noinput
 $ python manage.py runserver
 ```
 
@@ -50,6 +50,23 @@ api is at http://localhost:8000/api
 
 For now access index of the django app, you need to be connected to a django account 
 (you can use your supersuser account and connect via the admin login)
+
+### quickstart for deployement
+
+```
+$ git clone https://github.com/bdamay/django-bcf-manager.git
+$ cd  django-bcf-manager
+$ python3 -m venv venv
+$ . venv/bin/activate
+$ pip install -r requirements.txt 
+$ cd frontend 
+$ npm install
+$ npm run dev 
+$ cd .. 
+$ python manage.py collectstatic --noinput
+$ python manage.py runserver
+```
+
 
 For now (2020 10 20), 
 - you can just load a bcf zip at /topic url and look at your issues that's pretty much it.
