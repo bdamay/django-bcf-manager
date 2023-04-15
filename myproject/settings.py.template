@@ -147,3 +147,5 @@ WEBPACK_LOADER = {
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
     }
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
