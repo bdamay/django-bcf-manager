@@ -7,6 +7,7 @@ import glob
 import uuid
 from urllib.error import URLError
 
+from django.conf import settings
 DEFAULT_BCF_VERSION = '2.0'
 
 
@@ -23,7 +24,7 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     :param schemas_dir:
     :return: Dict data of the bcfzip file
     """
-    temp_dir = 'TEMP_EXTRACTED'
+    temp_dir = settings.TEMP_DIR
     try:
         shutil.rmtree(temp_dir)
     except:
@@ -57,7 +58,7 @@ def extract_content_from_bcfzip(filename, snapshots_dir, schemas_dir):
     pid = project['Project']['@ProjectId']  # keep track of pid for topics
 
     # One subdirectory = one BCF issue containing markup.bcf, viewpoint.bcfv and snapshots
-    issues = [o[1] for o in os.walk('./' + temp_dir)][0]
+    issues = [o[1] for o in os.walk( temp_dir)][0]
     topics = []
     viewpoints = []
     for issue in issues:
