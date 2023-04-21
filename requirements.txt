@@ -6,6 +6,6 @@ djangorestframework==3.14.0
 elementpath==1.1.8
 psycopg2==2.9.6
 pytz==2023.3
-sqlparse==0.4.3
+sqlparse==0.4.4
 tzdata==2023.3
 xmlschema==1.0.10
