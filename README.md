@@ -1,7 +1,5 @@
-# BCF Manager
-## Powered by Django, DRF 
-
-### Warning - This project is outdated. 
+# BCF Manager - Warning - This project is outdated. 
+## Django, DRF 
 
 A django based implementation of Building Smart's BCF API specification 
 
